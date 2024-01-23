@@ -151,10 +151,10 @@ def check_feasibility(env, address) -> Dict | str:
         street_num, street_name, city, state, zipc = format_address(address)
     except AddressException:
         return {"success": False, "errorMessage": "Invalid Address."}
-    
+
     token_response = get_token(get_token_url)
     print(token_response)
-    
+
     if token_response['success']:
         check_feasibility_request = f"""{{
                                             "sessionId" : "{token_response['sessionId']}",
@@ -188,7 +188,7 @@ def next_available(env, technology, side):
         addresses = DATA[env]['addresses'][side][technology][1:]
     except KeyError:
         return {"success": False, "errorMessage": "Please select Technology."}
-    
+
     for address in addresses:
         feasibility = check_feasibility(env, address)
         print(feasibility)
@@ -215,180 +215,181 @@ def format_address(address: str) -> Tuple[str, str, str, str, str] | None:
         raise AddressException
 
 
-opt_rcs = {
-    "Bring Codes": {
-        "GPON": {
-            "Gen7": "F.",
-            "Gen8": "8H",
-            "Gen9": "=P",
-        },
-        "XGS": {
-            "XGS": "(@",
-            "XGS 6E": "UQ"
-        }
-    },
-
-    "RESI": {
-        "Install": {
-            "Data Only or Data + Voice": "OY/DJ",
-            "With Video": "3Q/4Q"
-        },
-        "Services": {
+rate_codes = {
+    "Optimum": {
+        "Bring Codes": {
             "GPON": {
-                "100 Mbps": "F(",
-                "300 Mbps": "G!",
-                "500 Mbps": ")G",
-                "1000 Gbps": "Y*",
+                "Gen7": "F.",
+                "Gen8": "8H",
+                "Gen9 6E": "=P",
             },
-            "XGS": {
-                "2000 Gbps": "(^",
-                "5000 Gbps": "(*",
-                "8000 Gbps": "#8"
-            },
-        },
-        "Modem Fee": "N^",
-        "Video": {
-            "Bring Codes": {
-                "Altice Mini": "6Q",
-                "Stream SDMC": "+G and C4",
-                "Stream Sagemcom": ")# and )+"
-            },
-            "Services": {
-                "Basic TV": "YB",
-                "Core TV": "YC",
-                "Value TV": "YV",
-                "Select TV": "YS",
-                "Premier TV": "YP",
-            },
-            "Install": "65"
-        },
-        "Voice": {
-            "Services": {
-                "Promo Voice Line": "$.",
-                "Full Rate Voice Line": "2S",
-                "Additional Line": "MT"
-            },
-            "Install": "1X"
-        },
-        "NEF": "G8",
-        "Promo Tracker": "No Tracker Required."
-    },
-
-    "COMM": {
-        "Install": {
-            "Data Only or Data + Voice": "HK",
-        },
-        "Services": {
-            "GPON": {
-                "100 Mbps": "=)",
-                "300 Mbps": "=(",
-                "500 Mbps": "=*",
-                "1000 Gbps": "=^",
-            },
-            "XGS": {
-                "2000 Gbps": "(=",
-                "5000 Gbps": "(.",
-                "8000 Gbps": "=H"
+            "XGSPON": {
+                "XGS": "(@",
+                "XGS 6E": "UQ"
             }
         },
-        "Modem Fee": ".M",
-        "Voice": {
-            "Services": {
-                "1-3 Lines": "GC",
-                "4-24 Lines": "GW",
-            },
-            "Install": "Z1 and ZI"
-        },
-        "NEF": "No Secure Net.",
-        "Promo Tracker": "No Tracker Required."
-    },
-}
 
-sdl_rcs = {
-    "Bring Codes": {
-        "GPON": {
-            "Gen7": "F.",
-            "Gen8": "8H",
-            "Gen9": "=P",
+        "Residential": {
+            "Install": {
+                "Data Only or Data + Voice": "OY/DJ",
+                "With Video": "3Q/4Q"
+            },
+            "Services": {
+                "GPON": {
+                    "100 Mbps": "F(",
+                    "300 Mbps": "G!",
+                    "500 Mbps": ")G",
+                    "1000 Gbps": "Y*",
+                },
+                "XGSPON": {
+                    "2000 Gbps": "(^",
+                    "5000 Gbps": "(*",
+                    "8000 Gbps": "#8"
+                },
+            },
+            "Modem Fee": "N^",
+            "Video": {
+                "Bring Codes": {
+                    "Altice Mini": "6Q",
+                    "Stream SDMC": "+G and C4",
+                    "Stream Sagemcom": ")# and )+"
+                },
+                "Services": {
+                    "Basic TV": "YB",
+                    "Core TV": "YC",
+                    "Value TV": "YV",
+                    "Select TV": "YS",
+                    "Premier TV": "YP",
+                },
+                "Install": "65"
+            },
+            "Voice": {
+                "Services": {
+                    "Promo Voice Line": "$.",
+                    "Full Rate Voice Line": "2S",
+                    "Additional Line": "MT"
+                },
+                "Install": "1X"
+            },
+            "NEF": "G8",
+            "Promo Tracker": "No Tracker Required."
         },
-        "XGS": {
-            "XGS": "(@",
-            "XGS 6E": "UQ"
+
+        "Commercial": {
+            "Install": {
+                "Data Only or Data + Voice": "HK",
+            },
+            "Services": {
+                "GPON": {
+                    "100 Mbps": "=)",
+                    "300 Mbps": "=(",
+                    "500 Mbps": "=*",
+                    "1000 Gbps": "=^",
+                },
+                "XGSPON": {
+                    "2000 Gbps": "(=",
+                    "5000 Gbps": "(.",
+                    "8000 Gbps": "=H"
+                }
+            },
+            "Modem Fee": ".M",
+            "Voice": {
+                "Services": {
+                    "1-3 Lines": "GC",
+                    "4-24 Lines": "GW",
+                },
+                "Install": "Z1 and ZI"
+            },
+            "NEF": "No Secure Net.",
+            "Promo Tracker": "No Tracker Required."
         }
     },
-
-    "RESI": {
-        "Install": {
-            "Data Only or Data + Voice": "OY/DJ",
-            "With Video": "3Q/4Q"
-        },
-        "Services": {
+    "Suddenlink": {
+        "Bring Codes": {
             "GPON": {
-                "100 Mbps": "F^",
-                "300 Mbps": "53",
-                "500 Mbps": "MG",
-                "1000 Gbps": "OS",
+                "Gen7": "F.",
+                "Gen8": "8H",
+                "Gen9 6E": "=P",
             },
-            "XGS": {
-                "2000 Gbps": "TBD",
-                "5000 Gbps": "TBD",
-                "8000 Gbps": "TBD"
-            },
-        },
-        "Modem Fee": "N^",
-        "Video": {
-            "Bring Codes": {
-                "Altice Mini": "6Q",
-                "Stream SDMC": "+G and C4",
-                "Stream Sagemcom": ")# and )+"
-            },
-            "Services": {
-                "Basic TV": "YB",
-                "Core TV": "YC",
-                "Value TV": "YV",
-                "Select TV": "YS",
-                "Premier TV": "YP",
-            },
-            "Install": "65"
-        },
-        "Voice": {
-            "Services": {
-                "Promo Voice Line": "$.",
-                "Full Rate Voice Line": "2S",
-                "Additional Line": "MT"
-            },
-            "Install": "1X"
-        },
-        "NEF": "No NEF",
-        "Promo Tracker": ".6 (if required)"
-    },
-
-    "COMM": {
-        "Install": {
-            "Data Only or Data + Voice": "HK",
-        },
-        "Services": {
-            "GPON": {
-                "100 Mbps": "=)",
-                "300 Mbps": "=(",
-                "500 Mbps": "=*",
-                "1000 Gbps": "=^",
-            },
-            "XGS": {
-                "2000 Gbps": "(=",
-                "5000 Gbps": "(.",
-                "8000 Gbps": "TBD"
+            "XGSPON": {
+                "XGS": "(@",
+                "XGS 6E": "UQ"
             }
         },
-        "Modem Fee": ".M",
-        "Voice": {
-            "Services": {
-                "Primary Line": "@1",
-                "Secondary Lines": "NE",
+
+        "Residential": {
+            "Install": {
+                "Data Only or Data + Voice": "OY/DJ",
+                "With Video": "3Q/4Q"
             },
-            "Install": "Z1 and ZI"
+            "Services": {
+                "GPON": {
+                    "100 Mbps": "F^",
+                    "300 Mbps": "53",
+                    "500 Mbps": "MG",
+                    "1000 Gbps": "OS",
+                },
+                "XGSPON": {
+                    "2000 Gbps": "TBD",
+                    "5000 Gbps": "TBD",
+                    "8000 Gbps": "TBD"
+                },
+            },
+            "Modem Fee": "N^",
+            "Video": {
+                "Bring Codes": {
+                    "Altice Mini": "6Q",
+                    "Stream SDMC": "+G and C4",
+                    "Stream Sagemcom": ")# and )+"
+                },
+                "Services": {
+                    "Basic TV": "YB",
+                    "Core TV": "YC",
+                    "Value TV": "YV",
+                    "Select TV": "YS",
+                    "Premier TV": "YP",
+                },
+                "Install": "65"
+            },
+            "Voice": {
+                "Services": {
+                    "Promo Voice Line": "$.",
+                    "Full Rate Voice Line": "2S",
+                    "Additional Line": "MT"
+                },
+                "Install": "1X"
+            },
+            "NEF": "No NEF",
+            "Promo Tracker": ".6 (if required)"
         },
-        "NEF": "No Secure Net.",
-        "Promo Tracker": "No Tracker Required."
-    },
+
+        "Commercial": {
+            "Install": {
+                "Data Only or Data + Voice": "HK",
+            },
+            "Services": {
+                "GPON": {
+                    "100 Mbps": "=)",
+                    "300 Mbps": "=(",
+                    "500 Mbps": "=*",
+                    "1000 Gbps": "=^",
+                },
+                "XGSPON": {
+                    "2000 Gbps": "(=",
+                    "5000 Gbps": "(.",
+                    "8000 Gbps": "TBD"
+                }
+            },
+            "Modem Fee": ".M",
+            "Voice": {
+                "Services": {
+                    "Primary Line": "@1",
+                    "Secondary Lines": "NE",
+                },
+                "Install": "Z1 and ZI"
+            },
+            "NEF": "No Secure Net.",
+            "Promo Tracker": "No Tracker Required."
+        },
+    }
 }

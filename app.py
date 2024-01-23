@@ -2,6 +2,7 @@ import gooeypie as gp
 from check_feasibility import *
 import threading
 import time
+from itertools import zip_longest
 
 headings = ['Address', 'Availablility', 'Port']
 loading_flag = False
@@ -89,7 +90,49 @@ def loading(next=False):
         i += 1
     l.text = ' '*25
     b.disabled = False
+
+
+def display_ratecode(event):
+    data_table.clear()
+    video_table.clear()
+    voice_table.clear()
+    
+    data_bring = rate_codes[corp_radio.selected]["Bring Codes"][technology_radio.selected]
+    data_install = rate_codes[corp_radio.selected][proposal_radio.selected]["Install"]
+    data_service = rate_codes[corp_radio.selected][proposal_radio.selected]["Services"][technology_radio.selected]
+    data_fee = rate_codes[corp_radio.selected][proposal_radio.selected]["Modem Fee"]
+    
+    data_bring = [f'{k}: {v}' for k, v in data_bring.items()]
+    data_install = [f'{k}: {v}' for k, v in data_install.items()]
+    data_service = [f'{k}: {v}' for k, v in data_service.items()]
+    
+    if proposal_radio.selected == 'Residential':
+        video_bring = rate_codes[corp_radio.selected][proposal_radio.selected]["Video"]["Bring Codes"]
+        video_install = rate_codes[corp_radio.selected][proposal_radio.selected]["Video"]["Install"]
+        video_service = rate_codes[corp_radio.selected][proposal_radio.selected]["Video"]["Services"]
         
+        video_bring = [f'{k}: {v}' for k, v in video_bring.items()]
+        video_service = [f'{k}: {v}' for k, v in video_service.items()]
+        
+        video_data = list(map(list, zip_longest(video_bring, video_service, [video_install], fillvalue='')))
+        video_table.data = video_data
+    
+    voice_install = rate_codes[corp_radio.selected][proposal_radio.selected]["Voice"]["Install"]
+    voice_service = rate_codes[corp_radio.selected][proposal_radio.selected]["Voice"]["Services"]
+    
+    voice_service = [f'{k}: {v}' for k, v in voice_service.items()]
+    
+    nef = rate_codes[corp_radio.selected][proposal_radio.selected]["NEF"]
+    promo = rate_codes[corp_radio.selected][proposal_radio.selected]["Promo Tracker"]
+    
+    data_data = list(map(list, zip_longest(data_bring, data_service, data_install, [data_fee], fillvalue='')))
+    voice_data = list(map(list, zip_longest(voice_service,[voice_install], [nef], [promo], fillvalue='')))
+    
+    data_table.data = data_data    
+    voice_table.data = voice_data    
+        
+    ratecode_window.show_on_top()
+    
 
 app = gp.GooeyPieApp('Check Feasibility v1.0')
 app.set_resizable(False)
@@ -135,7 +178,7 @@ check_feasibility_on_a_specific_address_tab.add(select_address_lbl, 2, 1)
 check_feasibility_on_a_specific_address_tab.add(select_address_dd, 2, 2)
 check_feasibility_on_a_specific_address_tab.add(container, 3, 2)
 check_feasibility_on_a_specific_address_tab.add(padding, 4, 1)
-check_feasibility_on_a_specific_address_tab.add(output_tb, 5, 1, column_span=2, stretch=True, fill=True)
+check_feasibility_on_a_specific_address_tab.add(output_tb, 5, 1, column_span=2, fill=True)
 
 # ------------------------ END check_feasibility_on_a_specific_address_tab ----------------------------------------
 # ------------------------ next_available_address_tab ----------------------------------------
@@ -174,12 +217,61 @@ next_available_address_tab.add(technology_lbl, 3, 1)
 next_available_address_tab.add(technology_dd, 3, 2)
 # next_available_address_tab.add(submit_btn_1, 4, 1, column_span=2, align='center')
 next_available_address_tab.add(container_1, 4, 2)
-next_available_address_tab.add(output_tb_1, 5, 1, column_span=2, fill=True, stretch=True)
+next_available_address_tab.add(output_tb_1, 5, 1, column_span=2, fill=True)
 
 # ------------------------ END next_available_address_tab ----------------------------------------
+# ------------------------ START ratecodes_tab ----------------------------------------
+ratecodes_tab = gp.Tab(tab_container, 'Ratecodes')
+
+container_2 = gp.Container(ratecodes_tab)
+
+corp_radio = gp.LabelRadiogroup(container_2, 'Corp', ['Optimum', 'Suddenlink'])
+corp_radio.selected_index = 0
+
+proposal_radio = gp.LabelRadiogroup(container_2, 'Proposal', ['Residential', 'Commercial'])
+proposal_radio.selected_index = 0
+
+technology_radio = gp.LabelRadiogroup(container_2, 'Technology', ['GPON', 'XGSPON'])
+technology_radio.selected_index = 0
+
+view_btn = gp.Button(ratecodes_tab, 'View', display_ratecode)
+
+container_2.set_grid(1, 3)
+
+container_2.add(corp_radio, 1, 1)
+container_2.add(proposal_radio, 1, 2)
+container_2.add(technology_radio, 1, 3)
+
+ratecodes_tab.set_grid(2, 1)
+ratecodes_tab.add(container_2, 1, 1, align='center')
+ratecodes_tab.add(view_btn, 2, 1, align='center')
 
 tab_container.add(check_feasibility_on_a_specific_address_tab)
 tab_container.add(next_available_address_tab)
+tab_container.add(ratecodes_tab)
+
+ratecode_window = gp.Window(app, "Ratecodes")
+data_table = gp.Table(ratecode_window, ['Data Bring', 'Data Service', 'Data Install', 'Data Fee'])
+data_table.set_column_alignments('center', 'center', 'center', 'center')
+data_table.height = 5
+data_table.sortable = False
+video_table = gp.Table(ratecode_window, ['Video Bring', 'Video Service', 'Video Install'])
+video_table.set_column_alignments('center', 'center', 'center')
+video_table.height = 6
+video_table.sortable = False
+voice_table = gp.Table(ratecode_window, ['Voice Service', 'Voice Install', 'NEF', 'Tracker'])
+voice_table.set_column_alignments('center', 'center', 'center', 'center')
+voice_table.height = 4
+voice_table.sortable = False
+
+close_btn = gp.Button(ratecode_window, 'Close', lambda x: ratecode_window.hide())
+
+ratecode_window.set_grid(4, 1)
+ratecode_window.add(data_table, 1, 1)
+ratecode_window.add(video_table, 2, 1, fill=True)
+ratecode_window.add(voice_table, 3, 1)
+ratecode_window.add(close_btn, 4, 1, align='center')
+# ------------------------ END ratecodes_tab ----------------------------------------
 
 app.set_grid(1, 1)
 app.add(tab_container, 1, 1)
