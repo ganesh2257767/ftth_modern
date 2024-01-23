@@ -4,6 +4,7 @@ import threading
 import time
 from itertools import zip_longest
 
+version = 1.1
 headings = ['Address', 'Availablility', 'Port']
 loading_flag = False
 
@@ -134,7 +135,7 @@ def display_ratecode(event):
     ratecode_window.show_on_top()
     
 
-app = gp.GooeyPieApp('Check Feasibility v1.0')
+app = gp.GooeyPieApp(f'Check Feasibility v{version}')
 app.set_resizable(False)
 try:
     app.set_icon('.//favicon.png')
