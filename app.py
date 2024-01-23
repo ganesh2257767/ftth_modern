@@ -33,29 +33,33 @@ def set_technology_dropdown(event):
 
 
 def send_request(next=False):
-    output_str = []
+    output_str = ''
     if next:
-        # call next_available
-        feasibility_response, *address = next_available(env_radio_1.selected, technology_dd.selected, side_dd.selected)
-        o = output_tbl_1
-        address = address[0]
+        feasibility_response = next_available(env_radio_1.selected, technology_dd.selected, side_dd.selected)
+        o = output_tb_1
     else:
         feasibility_response = check_feasibility(env_radio.selected, select_address_dd.selected)
-        o = output_tbl
-        address = select_address_dd.selected
-    if isinstance(feasibility_response, dict):
-        output_str.append([address, feasibility_response['availability'], feasibility_response.get('ftthPdo', 'None')])
-        o.data = output_str
+        o = output_tb
+
+    if feasibility_response['success']:
+        output_str += f"Address: {feasibility_response['address']}\n\nAvailability: {feasibility_response['availability']}\n\nPDO Port: {feasibility_response.get('ftthPdo', 'None')}"
+        o.text = output_str
         app.update()
     else:
-        app.alert("Error", feasibility_response[1], 'error')
-        output_str.append(['', feasibility_response[1], ''])
-        o.data = output_str
+        output_str += f"Error: {feasibility_response['errorMessage']}"
+        o.text = output_str
         app.update()
+        app.alert("Error", f"Error: {feasibility_response['errorMessage']}", "error")
+
         
 
-app = gp.GooeyPieApp('Test')
+app = gp.GooeyPieApp('Check Feasibility v1.0')
 app.set_resizable(False)
+try:
+    app.set_icon('.//favicon.png')
+except FileNotFoundError:
+    pass
+
 
 tab_container = gp.TabContainer(app)
 
@@ -76,10 +80,7 @@ submit_btn = gp.Button(check_feasibility_on_a_specific_address_tab, 'Check', lam
 
 padding = gp.Label(check_feasibility_on_a_specific_address_tab, '')
 
-output_tbl = gp.Table(check_feasibility_on_a_specific_address_tab, headings=headings)
-output_tbl.height = 3
-output_tbl.set_column_alignments('center', 'center', 'center')
-output_tbl.sortable = False
+output_tb = gp.Textbox(check_feasibility_on_a_specific_address_tab, 20, 7)
 
 check_feasibility_on_a_specific_address_tab.set_grid(6, 2)
 check_feasibility_on_a_specific_address_tab.add(env_lbl, 1, 1)
@@ -88,7 +89,7 @@ check_feasibility_on_a_specific_address_tab.add(select_address_lbl, 2, 1)
 check_feasibility_on_a_specific_address_tab.add(select_address_dd, 2, 2)
 check_feasibility_on_a_specific_address_tab.add(submit_btn, 3, 1, column_span=2, align='center')
 check_feasibility_on_a_specific_address_tab.add(padding, 4, 1)
-check_feasibility_on_a_specific_address_tab.add(output_tbl, 5, 1, column_span=2, stretch=True, fill=True)
+check_feasibility_on_a_specific_address_tab.add(output_tb, 5, 1, column_span=2, stretch=True, fill=True)
 
 # ------------------------ END check_feasibility_on_a_specific_address_tab ----------------------------------------
 # ------------------------ next_available_address_tab ----------------------------------------
@@ -108,11 +109,7 @@ technology_dd = gp.Dropdown(next_available_address_tab, [])
 
 submit_btn_1 = gp.Button(next_available_address_tab, 'Check', lambda x: threading.Thread(target=send_request, args=(True,)).start())
 
-output_tbl_1 = gp.Table(next_available_address_tab, headings=headings)
-output_tbl_1.height = 3
-output_tbl_1.set_column_alignments('center', 'center', 'center')
-output_tbl_1.sortable = False
-
+output_tb_1 = gp.Textbox(next_available_address_tab, 20, 7)
 
 next_available_address_tab.set_grid(5, 2)
 next_available_address_tab.add(env_lbl_1, 1, 1)
@@ -122,7 +119,7 @@ next_available_address_tab.add(side_dd, 2, 2)
 next_available_address_tab.add(technology_lbl, 3, 1)
 next_available_address_tab.add(technology_dd, 3, 2)
 next_available_address_tab.add(submit_btn_1, 4, 1, column_span=2, align='center')
-next_available_address_tab.add(output_tbl_1, 5, 1, column_span=2, fill=True, stretch=True)
+next_available_address_tab.add(output_tb_1, 5, 1, column_span=2, fill=True, stretch=True)
 
 # ------------------------ END next_available_address_tab ----------------------------------------
 

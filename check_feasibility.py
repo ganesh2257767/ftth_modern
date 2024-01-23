@@ -130,16 +130,15 @@ def get_token(get_token_url: str) -> str | Dict:
                         "sessionId": "{now}",
                         "sourceApp": "IDA"
                     }}"""
-    print(get_token)
     get_token_json = json.loads(get_token)
 
     try:
         token_response = requests.post(
             get_token_url, json=get_token_json).json()
     except requests.exceptions.ConnectionError:
-        return "VPN_FAIL", "Make sure VPN is connected, or check network connection."
+        return {"success": False, "errorMessage": "Make sure VPN is connected, or check network connection."}
     except json.decoder.JSONDecodeError:
-        return "TOKEN FAIL", "Token generation failed!"
+        return {"success": False, "errorMessage": "Token generation failed!"}
     else:
         return token_response
 
@@ -151,51 +150,60 @@ def check_feasibility(env, address) -> Dict | str:
     try:
         street_num, street_name, city, state, zipc = format_address(address)
     except AddressException:
-        return (False, "Invalid Address")
+        return {"success": False, "errorMessage": "Invalid Address."}
     
     token_response = get_token(get_token_url)
+    print(token_response)
+    
+    if token_response['success']:
+        check_feasibility_request = f"""{{
+                                            "sessionId" : "{token_response['sessionId']}",
+                                            "sourceApp" : "IDA",
+                                            "token" : "{token_response['token']}",
+                                            "address" : {{
+                                                "streetNumber" : "{street_num}",
+                                                "streetName" : "{street_name}",
+                                                "city" : "{city}",
+                                                "state" : "{state}",
+                                                "zipCode" : "{zipc}"
+                                            }}
+                                        }}"""
+        check_feasibility_request_json = json.loads(check_feasibility_request)
 
-    check_feasibility_request = f"""{{
-                                        "sessionId" : "{token_response['sessionId']}",
-                                        "sourceApp" : "IDA",
-                                        "token" : "{token_response['token']}",
-                                        "address" : {{
-                                            "streetNumber" : "{street_num}",
-                                            "streetName" : "{street_name}",
-                                            "city" : "{city}",
-                                            "state" : "{state}",
-                                            "zipCode" : "{zipc}"
-                                        }}
-                                    }}"""
-    check_feasibility_request_json = json.loads(check_feasibility_request)
+        try:
+            feasibility_response = requests.post(
+                check_feasibility_url, json=check_feasibility_request_json).json()
+        except requests.exceptions.ConnectionError:
+            return {"success": False, "errorMessage": "VPN or Connection Error."}
 
-    try:
-        feasibility_response = requests.post(
-            check_feasibility_url, json=check_feasibility_request_json).json()
-    except requests.exceptions.ConnectionError:
-        return (False, "VPN or Connection Error")
-
-    with open('temp.json', 'w') as f:
-        json.dump(feasibility_response, f, indent=4)
-    return feasibility_response
+        with open('temp.json', 'w') as f:
+            json.dump(feasibility_response, f, indent=4)
+        feasibility_response['address'] = address
+        return feasibility_response
+    return token_response
 
 
-def next_available(env, technology, side):
+def next_available(env, technology, side): 
     addresses = DATA[env]['addresses'][side][technology][1:]
     
     for address in addresses:
         feasibility = check_feasibility(env, address)
-        if isinstance(feasibility, dict):
+        print(feasibility)
+        if feasibility['success']:
             av = feasibility.get("availability", 'None')
             if av == "AVAILABLE":
-                return feasibility, address
+                return feasibility
         else:
             return feasibility
-    return (False, "No Ports available.")
+    return {"success": False, "errorMessage": "No Ports available."}
 
 
 def format_address(address: str) -> Tuple[str, str, str, str, str] | None:
-    address: List = address.split()
+    try:
+        address: List = address.split()
+    except AttributeError:
+        raise AddressException
+
     if len(address) == 6:
         street_num, street_name, city, state, zipc = address[0], " ".join(
             address[1:3]), address[3], address[4], address[5]
