@@ -183,8 +183,11 @@ def check_feasibility(env, address) -> Dict | str:
     return token_response
 
 
-def next_available(env, technology, side): 
-    addresses = DATA[env]['addresses'][side][technology][1:]
+def next_available(env, technology, side):
+    try:
+        addresses = DATA[env]['addresses'][side][technology][1:]
+    except KeyError:
+        return {"success": False, "errorMessage": "Please select Technology."}
     
     for address in addresses:
         feasibility = check_feasibility(env, address)

@@ -1,8 +1,10 @@
 import gooeypie as gp
 from check_feasibility import *
 import threading
+import time
 
 headings = ['Address', 'Availablility', 'Port']
+loading_flag = False
 
 def setup():
     set_address_dropdown(False)
@@ -33,6 +35,9 @@ def set_technology_dropdown(event):
 
 
 def send_request(next=False):
+    global loading_flag
+    loading_flag = True
+    threading.Thread(target=loading, args=(next,), daemon=True).start()
     output_str = ''
     if next:
         feasibility_response = next_available(env_radio_1.selected, technology_dd.selected, side_dd.selected)
@@ -50,7 +55,40 @@ def send_request(next=False):
         o.text = output_str
         app.update()
         app.alert("Error", f"Error: {feasibility_response['errorMessage']}", "error")
+    loading_flag = False
+    
 
+
+def loading(next=False):
+    # ls = ["⢿", "⣻", "⣽", "⣾", "⣷", "⣯", "⣟", "⡿"]
+    # ls = ["⠁","⠂","⠄","⡀","⡈","⡐","⡠","⣀","⣁","⣂","⣄","⣌","⣔","⣤","⣥","⣦","⣮","⣶","⣷","⣿","⡿","⠿","⢟","⠟","⡛","⠛","⠫","⢋","⠋","⠍","⡉","⠉","⠑","⠡","⢁"]
+    ls = [
+			"▰▱▱▱▱▱▱ ",
+			"▰▰▱▱▱▱▱ ",
+			"▰▰▰▱▱▱▱ ",
+			"▰▰▰▰▱▱▱ ",
+			"▰▰▰▰▰▱▱ ",
+			"▰▰▰▰▰▰▱ ",
+			"▰▰▰▰▰▰▰ ",
+			"▰▱▱▱▱▱▱ "
+		]
+    global loading_flag
+    i = 0
+    if next:
+        l = loading_lbl_1
+        b = submit_btn_1
+    else:
+        l = loading_lbl
+        b = submit_btn
+        
+    while loading_flag:
+        b.disabled = True
+        l.text = ls[i%len(ls)]
+        app.update()
+        time.sleep(0.2)
+        i += 1
+    l.text = ' '*25
+    b.disabled = False
         
 
 app = gp.GooeyPieApp('Check Feasibility v1.0')
@@ -76,18 +114,26 @@ select_address_lbl = gp.Label(check_feasibility_on_a_specific_address_tab, 'Sele
 select_address_dd = gp.Dropdown(check_feasibility_on_a_specific_address_tab, [])
 select_address_dd.width = 40
 
-submit_btn = gp.Button(check_feasibility_on_a_specific_address_tab, 'Check', lambda x: threading.Thread(target=send_request).start())
+container = gp.Container(check_feasibility_on_a_specific_address_tab)
+submit_btn = gp.Button(container, 'Check', lambda x: threading.Thread(target=send_request).start())
+submit_btn.margin_right = 1
+loading_lbl = gp.Label(container, ' '*25)
+loading_lbl.margin_left = 1
 
 padding = gp.Label(check_feasibility_on_a_specific_address_tab, '')
 
 output_tb = gp.Textbox(check_feasibility_on_a_specific_address_tab, 20, 7)
+
+container.set_grid(1, 2)
+container.add(submit_btn, 1, 1, align='left')
+container.add(loading_lbl, 1, 2, align='left')
 
 check_feasibility_on_a_specific_address_tab.set_grid(6, 2)
 check_feasibility_on_a_specific_address_tab.add(env_lbl, 1, 1)
 check_feasibility_on_a_specific_address_tab.add(env_radio, 1, 2)
 check_feasibility_on_a_specific_address_tab.add(select_address_lbl, 2, 1)
 check_feasibility_on_a_specific_address_tab.add(select_address_dd, 2, 2)
-check_feasibility_on_a_specific_address_tab.add(submit_btn, 3, 1, column_span=2, align='center')
+check_feasibility_on_a_specific_address_tab.add(container, 3, 2)
 check_feasibility_on_a_specific_address_tab.add(padding, 4, 1)
 check_feasibility_on_a_specific_address_tab.add(output_tb, 5, 1, column_span=2, stretch=True, fill=True)
 
@@ -107,9 +153,17 @@ side_dd.add_event_listener('select', set_technology_dropdown)
 technology_lbl = gp.Label(next_available_address_tab, 'Select Technology')
 technology_dd = gp.Dropdown(next_available_address_tab, [])
 
-submit_btn_1 = gp.Button(next_available_address_tab, 'Check', lambda x: threading.Thread(target=send_request, args=(True,)).start())
+container_1 = gp.Container(next_available_address_tab)
+submit_btn_1 = gp.Button(container_1, 'Check', lambda x: threading.Thread(target=send_request, args=(True,)).start())
+submit_btn_1.margin_right = 1
+loading_lbl_1 = gp.Label(container_1, ' '*25)
+loading_lbl_1.margin_left = 1
 
 output_tb_1 = gp.Textbox(next_available_address_tab, 20, 7)
+
+container_1.set_grid(1, 2)
+container_1.add(submit_btn_1, 1, 1, align='left')
+container_1.add(loading_lbl_1, 1, 2, align='left')
 
 next_available_address_tab.set_grid(5, 2)
 next_available_address_tab.add(env_lbl_1, 1, 1)
@@ -118,7 +172,8 @@ next_available_address_tab.add(side_lbl, 2, 1)
 next_available_address_tab.add(side_dd, 2, 2)
 next_available_address_tab.add(technology_lbl, 3, 1)
 next_available_address_tab.add(technology_dd, 3, 2)
-next_available_address_tab.add(submit_btn_1, 4, 1, column_span=2, align='center')
+# next_available_address_tab.add(submit_btn_1, 4, 1, column_span=2, align='center')
+next_available_address_tab.add(container_1, 4, 2)
 next_available_address_tab.add(output_tb_1, 5, 1, column_span=2, fill=True, stretch=True)
 
 # ------------------------ END next_available_address_tab ----------------------------------------
