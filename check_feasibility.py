@@ -10,8 +10,6 @@ dotenv.load_dotenv()
 user = os.getenv('uname')
 password = os.getenv('pw')
 
-version = 0.1
-
 DATA = {
     "QA INT": {
         "addresses": {
@@ -55,7 +53,12 @@ DATA = {
                     "3105 BAYLOR ST LUBBOCK TX 79415",
                     "3107 BAYLOR ST LUBBOCK TX 79415",
                     "3109 BAYLOR ST LUBBOCK TX 79415"
-                ],
+                ],"RFOG": [
+                     f"{'RFOG':=^30}",
+                    "3309 AUBURN ST LUBBOCK TX 79415",
+                    "3311 AUBURN ST LUBBOCK TX 79415",
+                    "3313 AUBURN ST LUBBOCK TX 79415",
+                ]
             }
         },
         "get_token": "http://microservices-int.lab.cscqa.com/GateKeeper_V1/api/getToken",
