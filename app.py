@@ -4,7 +4,7 @@ import threading
 import time
 from itertools import zip_longest
 
-version = 1.2
+version = 1.3
 headings = ['Address', 'Availablility', 'Port']
 loading_flag = False
 
