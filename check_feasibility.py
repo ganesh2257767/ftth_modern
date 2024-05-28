@@ -222,10 +222,12 @@ def check_feasibility(env, address) -> Dict | str:
 
 def next_available(env, technology, side):
     try:
-        addresses = DATA[env]['addresses'][side][technology][1:]
+        addresses = DATA[env]['addresses'][side][technology]
     except KeyError:
         return {"success": False, "errorMessage": "Please select Technology."}
-
+    
+    addresses = [x for x in addresses if '=' not in x]
+        
     for address in addresses:
         feasibility = check_feasibility(env, address)
         print(feasibility)
