@@ -14,9 +14,7 @@ DATA = {
     "QA INT": {
         "addresses": {
             "OPT": {
-                "GPON": [
-                    f"{'GPON':=^30}",
-                    
+                "GPON": [                    
                     "30 ASH LN HICKSVILLE NY 11801",
                     "34 ASH LN HICKSVILLE NY 11801",
                     "36 ASH LN HICKSVILLE NY 11801",
@@ -34,17 +32,13 @@ DATA = {
                     "41 ATLAS LN HICKSVILLE NY 11801",
                     "15 BEACON LN HICKSVILLE NY 11801"
                 ],
-                "XGSPON": [
-                    f"{'XGSPON':=^30}",
-                    
+                "XGSPON": [                    
                     "61 SLEEPY LN HICKSVILLE NY 11801",
                     "65 SLEEPY LN HICKSVILLE NY 11801",
                     "53 SLEEPY LN HICKSVILLE NY 11801",
                     "67 SLEEPY LN HICKSVILLE NY 11801"
                 ],
-                "CHT": [
-                    f"{'CHT':=^30}",
-                    
+                "CHT": [                    
                     f"{'C01_EAST':=^30}",
                     "17 DANTE AVE HICKSVILLE NY 11801",
                     "11 DANTE AVE HICKSVILLE NY 11801",
@@ -63,9 +57,7 @@ DATA = {
                     "89 DANTE AVE HICKSVILLE NY 11801",
                     "52 DANTE AVE HICKSVILLE NY 11801",
                 ],
-                "WITH DELAY": [
-                    f"{'AVAILABLE WITH DELAY':=^30}",
-                    
+                "WITH DELAY": [                    
                     "3 WILLOW AVE HICKSVILLE NY 11801",
                     "6 BISHOP LN HICKSVILLE NY 11801",
                     "11 ATLAS LN HICKSVILLE NY 11801",
@@ -74,24 +66,18 @@ DATA = {
                 ],
             },
             "SDL": {
-                "XGSPON": [
-                    f"{'SDL':=^30}",
-                    
+                "XGSPON": [                    
                     "3103 BAYLOR ST LUBBOCK TX 79415",
                     "3105 BAYLOR ST LUBBOCK TX 79415",
                     "3107 BAYLOR ST LUBBOCK TX 79415",
                     "3109 BAYLOR ST LUBBOCK TX 79415"
                 ],
-                "RFOG": [
-                    f"{'RFOG':=^30}",
-                    
+                "RFOG": [                    
                     "3309 AUBURN ST LUBBOCK TX 79415",
                     "3311 AUBURN ST LUBBOCK TX 79415",
                     "3313 AUBURN ST LUBBOCK TX 79415",
                 ],
-                "CHT": [
-                    f"{'SDL':=^30}",
-                    
+                "CHT": [                    
                     f"{'C01_WEST':=^30}",
                     "3313 DUKE ST LUBBOCK TX 79415"
                     "3311 DUKE ST LUBBOCK TX 79415"
@@ -120,14 +106,12 @@ DATA = {
         "addresses": {
             "OPT": {
                 "GPON": [
-                    f"{'GPON':=^30}",
                     "186 JACKSON AVE MINEOLA NY 11501",
                     "179 GRANT AVE MINEOLA NY 11501",
                     "177 JEFFERSON AVE MINEOLA NY 11501",
                     "231 WASHINGTON AVE MINEOLA NY 11501",
                 ],
                 "XGSPON": [
-                    f"{'XGSPON':=^30}",
                     f"{'PDO1':=^30}",
                     "305 WALTER AVE MINEOLA NY 11501",
                     "306 WALTER AVE MINEOLA NY 11501",
@@ -146,7 +130,6 @@ DATA = {
                     "326 COOLIDGE AVE MINEOLA NY 11501",
                 ],
                 "CISCO BNG": [
-                    f"{'CISCO BNG':=^30}",
                     "130 WALKER RD MINEOLA NY 11501",
                     "134 WALKER RD MINEOLA NY 11501",
                     "135 WALKER RD MINEOLA NY 11501",
@@ -156,31 +139,33 @@ DATA = {
             },
             "SDL": {
                 "XGSPON": [
-                    f"{'SDL':=^30}",
                     f"{'PDO1':=^30}",
                     "531 ROANE ST CHARLESTON WV 25302",
                     "525 ROANE ST CHARLESTON WV 25302",
                     "523 ROANE ST CHARLESTON WV 25302",
+                    
                     f"{'PDO2':=^30}",
                     "521 WYOMING ST CHARLESTON WV 25302",
                     "522 WYOMING ST CHARLESTON WV 25302",
                     "523 WYOMING ST CHARLESTON WV 25302",
                     "524 WYOMING ST CHARLESTON WV 25302",
+                    
                     f"{'PDO3':=^30}",
                     "519 WYOMING ST CHARLESTON WV 25302",
                     "518 WYOMING ST CHARLESTON WV 25302",
                     "517 WYOMING ST CHARLESTON WV 25302",
+                    
                     f"{'PDO4':=^30}",
                     "536 WYOMING ST CHARLESTON WV 25302",
                     "537 WYOMING ST CHARLESTON WV 25302",
                     "534 WYOMING ST CHARLESTON WV 25302",
+                    
                     f"{'PDO5':=^30}",
                     "624 RANDOLPH ST CHARLESTON WV 25302",
                     "625 RANDOLPH ST CHARLESTON WV 25302",
                     "623 RANDOLPH ST CHARLESTON WV 25302",
                 ],
                 "RFOG": [
-                    f"{'RFOG':=^30}",
                     "733 CENTRAL AVE CHARLESTON WV 25302",
                     "735 CENTRAL AVE CHARLESTON WV 25302",
                     "736 CENTRAL AVE CHARLESTON WV 25302",
