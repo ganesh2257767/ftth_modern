@@ -16,6 +16,7 @@ DATA = {
             "OPT": {
                 "GPON": [
                     f"{'GPON':=^30}",
+                    
                     "30 ASH LN HICKSVILLE NY 11801",
                     "34 ASH LN HICKSVILLE NY 11801",
                     "36 ASH LN HICKSVILLE NY 11801",
@@ -35,13 +36,36 @@ DATA = {
                 ],
                 "XGSPON": [
                     f"{'XGSPON':=^30}",
+                    
                     "61 SLEEPY LN HICKSVILLE NY 11801",
                     "65 SLEEPY LN HICKSVILLE NY 11801",
                     "53 SLEEPY LN HICKSVILLE NY 11801",
                     "67 SLEEPY LN HICKSVILLE NY 11801"
                 ],
+                "CHT": [
+                    f"{'CHT':=^30}",
+                    
+                    f"{'C01_EAST':=^30}",
+                    "17 DANTE AVE HICKSVILLE NY 11801",
+                    "11 DANTE AVE HICKSVILLE NY 11801",
+                    "19 DANTE AVE HICKSVILLE NY 11801",
+                    "16 DANTE AVE HICKSVILLE NY 11801",
+                    
+                    f"{'C02_EAST':=^30}",
+                    "51 DANTE AVE HICKSVILLE NY 11801",
+                    "49 DANTE AVE HICKSVILLE NY 11801",
+                    "47 DANTE AVE HICKSVILLE NY 11801",
+                    "31 DANTE AVE HICKSVILLE NY 11801",
+                    
+                    f"{'C03_EAST':=^30}",
+                    "87 DANTE AVE HICKSVILLE NY 11801",
+                    "85 DANTE AVE HICKSVILLE NY 11801",
+                    "89 DANTE AVE HICKSVILLE NY 11801",
+                    "52 DANTE AVE HICKSVILLE NY 11801",
+                ],
                 "WITH DELAY": [
                     f"{'AVAILABLE WITH DELAY':=^30}",
+                    
                     "3 WILLOW AVE HICKSVILLE NY 11801",
                     "6 BISHOP LN HICKSVILLE NY 11801",
                     "11 ATLAS LN HICKSVILLE NY 11801",
@@ -52,15 +76,39 @@ DATA = {
             "SDL": {
                 "XGSPON": [
                     f"{'SDL':=^30}",
+                    
                     "3103 BAYLOR ST LUBBOCK TX 79415",
                     "3105 BAYLOR ST LUBBOCK TX 79415",
                     "3107 BAYLOR ST LUBBOCK TX 79415",
                     "3109 BAYLOR ST LUBBOCK TX 79415"
-                ],"RFOG": [
-                     f"{'RFOG':=^30}",
+                ],
+                "RFOG": [
+                    f"{'RFOG':=^30}",
+                    
                     "3309 AUBURN ST LUBBOCK TX 79415",
                     "3311 AUBURN ST LUBBOCK TX 79415",
                     "3313 AUBURN ST LUBBOCK TX 79415",
+                ],
+                "CHT": [
+                    f"{'SDL':=^30}",
+                    
+                    f"{'C01_WEST':=^30}",
+                    "3313 DUKE ST LUBBOCK TX 79415"
+                    "3311 DUKE ST LUBBOCK TX 79415"
+                    "3309 DUKE ST LUBBOCK TX 79415"
+                    "3307 DUKE ST LUBBOCK TX 79415"
+
+                    f"{'C02_WEST':=^30}",
+                    "3221 DUKE ST LUBBOCK TX 79415"
+                    "3219 DUKE ST LUBBOCK TX 79415"
+                    "3217 DUKE ST LUBBOCK TX 79415"
+                    "3301 DUKE ST LUBBOCK TX 79415"
+
+                    f"{'C0_WEST':=^30}",
+                    "3207 DUKE ST LUBBOCK TX 79415"
+                    "3205 DUKE ST LUBBOCK TX 79415"
+                    "3209 DUKE ST LUBBOCK TX 79415"
+                    "3203 DUKE ST LUBBOCK TX 79415"
                 ]
             }
         },
@@ -225,9 +273,9 @@ def next_available(env, technology, side):
         addresses = DATA[env]['addresses'][side][technology]
     except KeyError:
         return {"success": False, "errorMessage": "Please select Technology."}
-    
+
     addresses = [x for x in addresses if '=' not in x]
-        
+
     for address in addresses:
         feasibility = check_feasibility(env, address)
         print(feasibility)
