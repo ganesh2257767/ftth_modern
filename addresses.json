@@ -21,10 +21,26 @@
                     "15 BEACON LN HICKSVILLE NY 11801"
                 ],
                 "XGSPON": [
+                    "=============PDO1=============",
                     "61 SLEEPY LN HICKSVILLE NY 11801",
                     "65 SLEEPY LN HICKSVILLE NY 11801",
                     "53 SLEEPY LN HICKSVILLE NY 11801",
-                    "67 SLEEPY LN HICKSVILLE NY 11801"
+                    "67 SLEEPY LN HICKSVILLE NY 11801",
+                    "=============PDO2=============",
+                    "50 SLEEPY LN HICKSVILLE NY 11801",
+                    "54 SLEEPY LN HICKSVILLE NY 11801",
+                    "44 SLEEPY LN HICKSVILLE NY 11801",
+                    "58 SLEEPY LN HICKSVILLE NY 11801",
+                    "=============PDO3=============",
+                    "7 SLEEPY LN HICKSVILLE NY 11801",
+                    "5 SLEEPY LN HICKSVILLE NY 11801",
+                    "9 SLEEPY LN HICKSVILLE NY 11801",
+                    "2 SLEEPY LN HICKSVILLE NY 11801",
+                    "=============PDO4=============",
+                    "35 SLEEPY LN HICKSVILLE NY 11801",
+                    "33 SLEEPY LN HICKSVILLE NY 11801",
+                    "29 SLEEPY LN HICKSVILLE NY 11801",
+                    "39 SLEEPY LN HICKSVILLE NY 11801"
                 ],
                 "CHT": [
                     "===========C01_EAST===========",
@@ -118,7 +134,10 @@
                     "135 WALKER RD MINEOLA NY 11501",
                     "143 WALKER RD MINEOLA NY 11501",
                     "146 WALKER RD MINEOLA NY 11501"
-                ]
+                ],
+                "VIRTUAL": [
+                    "101 MILLINGTON PL MINEOLA NY 11501"
+                ] 
             },
             "SDL": {
                 "XGSPON": [
