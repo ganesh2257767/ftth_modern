@@ -1,13 +1,7 @@
 {
-    "sessionId": "Mon Sep 02 15:22:36 2024",
+    "sessionId": "Tue Oct 29 19:41:57 2024",
     "sourceApp": "IDA",
-    "success": true,
-    "errorCode": "200",
-    "errorMessage": "OK",
-    "availability": "AVAILABLE",
-    "ftthPdo": "1771564",
-    "ftthPdoDescription": "{\n  \"id\" : \"1771564\",\n  \"type\" : \"ME.PDO\",\n  \"name\" : \"P03.11501\",\n  \"location\" : {\n    \"id\" : null,\n    \"type\" : \"LOC.PHYSICAL.IP.MAIN.POLE.JOINT\",\n    \"labelType\" : \"Joint Pole\",\n    \"name\" : \"L-9\",\n    \"description\" : null,\n    \"parentLocation\" : \"[USA] United States , [NY] NEW YORK , [36059] NASSAU , [3605953000] NORTH HEMPSTEAD\",\n    \"address\" : {\n      \"streetNr\" : \"185 APT 1FL\",\n      \"streetName\" : \"GRANT AVE\",\n      \"city\" : \"MINEOLA\",\n      \"stateOrProvince\" : \"NY\",\n      \"postcode\" : \"11501\",\n      \"streetNrSuffix\" : null\n    }\n  },\n  \"unknownODN\" : \"NO\",\n  \"cellName\" : \"NY03003\",\n  \"feedingHeadEnds\" : [ \"NY03\" ]\n}",
-    "technology": "GPON",
-    "maxUpSpeed": "1244",
-    "maxDownSpeed": "2488"
+    "success": false,
+    "errorCode": "500",
+    "errorMessage": "Internal server error, due to an unexpected condition."
 }

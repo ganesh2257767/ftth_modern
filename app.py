@@ -19,10 +19,6 @@ def set_address_dropdown(event):
         addresses = DATA[env_radio.selected]["addresses"][side_dd.selected][technology_dd.selected]
     else:
         addresses = DATA["QA INT"]["addresses"]["OPT"]["GPON"]
-    t = []
-    # for side in ("OPT", "SDL"):
-    #     for lst in addresses[side].values():
-    #         t.extend(lst)
     select_address_dd.items = addresses
 
 def set_technology_dropdown(event):
@@ -33,6 +29,7 @@ def set_technology_dropdown(event):
             tech = list(DATA[env_radio.selected]["addresses"][event.widget.selected].keys())
     else:
         tech = list(DATA[env_radio.selected]["addresses"][side_dd.selected].keys())
+        
     technology_dd.items = tech
 
 

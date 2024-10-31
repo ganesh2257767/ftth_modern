@@ -6,3 +6,4 @@ build/
 dist/
 *.exe
 *.spec
+temp.json
