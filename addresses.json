@@ -72,10 +72,26 @@
             },
             "SDL": {
                 "XGSPON": [
+                    "=============PDO1=============",
                     "3103 BAYLOR ST LUBBOCK TX 79415",
                     "3105 BAYLOR ST LUBBOCK TX 79415",
                     "3107 BAYLOR ST LUBBOCK TX 79415",
-                    "3109 BAYLOR ST LUBBOCK TX 79415"
+                    "3109 BAYLOR ST LUBBOCK TX 79415",
+                    "=============PDO2=============",
+                    "3009 BAYLOR ST LUBBOCK TX 79415",
+                    "3007 BAYLOR ST LUBBOCK TX 79415",
+                    "3011 BAYLOR ST LUBBOCK TX 79415",
+                    "3005 BAYLOR ST LUBBOCK TX 79415",
+                    "=============PDO3=============",
+                    "3223 BAYLOR ST LUBBOCK TX 79415",
+                    "3221 BAYLOR ST LUBBOCK TX 79415",
+                    "3219 BAYLOR ST LUBBOCK TX 79415",
+                    "3217 BAYLOR ST LUBBOCK TX 79415",
+                    "=============PDO4=============",
+                    "3317 BAYLOR ST LUBBOCK TX 79415",
+                    "3315 BAYLOR ST LUBBOCK TX 79415",
+                    "3319 BAYLOR ST LUBBOCK TX 79415",
+                    "3313 BAYLOR ST LUBBOCK TX 79415"
                 ],
                 "RFOG": [
                     "3309 AUBURN ST LUBBOCK TX 79415",
